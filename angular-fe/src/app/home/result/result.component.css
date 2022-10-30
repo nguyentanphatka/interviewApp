@@ -1,0 +1,12 @@
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+h1 {
+    font-weight: bold;
+}
+button {
+    margin-left: 15px;
+}

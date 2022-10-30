@@ -1,0 +1,107 @@
+<div class="header-wrapper">
+  <span><h1>Students Table Result</h1></span>
+  <span>
+    <button 
+    nz-tooltip
+    nzTooltipTitle="Move to add students page"
+    nzTooltipPlacement="bottomLeft"
+    nz-button [routerLink]="['/']" nzType="primary">Move Add Students Page</button>
+    <button
+      nz-button nz-tooltip
+      nzTooltipTitle="Sort students"
+      nzTooltipPlacement="bottomLeft"
+      (click)="sortStudents()"
+      nzType="primary"
+      [nzLoading]="isLoadingSortBtn"
+    >
+      Sort
+    </button>
+    <button
+      nz-button
+      nz-tooltip
+      nzTooltipTitle="Reload"
+      nzTooltipPlacement="bottomLeft"
+      (click)="reloadStudents()"
+      nzType="primary"
+      [nzLoading]="isLoadingClearSortBtn"
+    >
+      Clear sort
+    </button>
+    <button
+      nz-button
+      nz-tooltip
+      nzTooltipTitle="Delete all students"
+      nzTooltipPlacement="bottomLeft"
+      nz-popconfirm
+      nzPopconfirmTitle="Sure to delete?"
+      nzPopconfirmPlacement="bottomLeft"
+      (nzOnConfirm)="deleteAllStudents()"
+      nzType="primary"
+      [nzLoading]="isLoadingDeleteBtn"
+    >
+      Delete Students
+    </button>
+  </span>
+</div>
+<nz-table
+  #editRowTable
+  nzBordered
+  [nzData]="students"
+  [nzLoading]="isLoadingData"
+>
+  <thead>
+    <tr>
+      <th nzWidth="10%">#</th>
+      <th nzWidth="10%">Id</th>
+      <th nzWidth="40%">Full Name</th>
+      <th nzWidth="30%">DOB</th>
+      <th nzWidth="10%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of editRowTable.data; let i = index" class="editable-row">
+      <td>{{i+1}}</td>
+      <td>{{data.id}}</td>
+      <td>
+        <div
+          class="editable-cell"
+          [hidden]="editId === data.id"
+          (click)="startEditName(data.id)"
+        >
+          {{ data.fullName }}
+        </div>
+        <input
+          [hidden]="editId !== data.id"
+          type="text"
+          nz-input
+          [(ngModel)]="data.fullName"
+          (blur)="stopEdit()"
+        />
+      </td>
+      <td>
+        <div
+          class="editable-cell"
+          [hidden]="editId === data.id"
+          (click)="startEditDob(data.id)"
+        >
+          {{ data.dob | date: 'dd/MM/yyyy'}}
+        </div>
+        <input
+          [hidden]="editId !== data.id"
+          type="text"
+          nz-input
+          [(ngModel)]="data.dob"
+          (blur)="stopEdit()"
+        />
+      </td>
+      <td>
+        <a
+          nz-popconfirm
+          nzPopconfirmTitle="Sure to delete?"
+          (nzOnConfirm)="deleteRow(data.id)"
+          >Delete</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

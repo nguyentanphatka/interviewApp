@@ -1,0 +1,81 @@
+<div class="header-wrapper">
+  <span><h1>Students Table Insert</h1></span>
+  <span>
+    <button nz-button (click)="addRow()" nzType="primary">Add Item</button>
+    <button
+      nz-button  
+      nz-tooltip
+      nzTooltipTitle="Reuired length of list students is 30."
+      nzTooltipPlacement="bottomLeft"
+      (click)="handleSave()"
+      nzType="primary"
+      [nzLoading]="isLoadingSaveBtn"
+    >
+      Save list students
+    </button>
+    <button 
+    nz-button  
+    nz-tooltip
+    nzTooltipTitle="Move to sort page."
+    nzTooltipPlacement="bottomLeft"
+    [routerLink]="['/result']" 
+    nzType="primary">Move To Result Page</button>
+  </span>
+</div>
+<br />
+<br />
+<nz-table #editRowTable nzBordered [nzData]="students">
+  <thead>
+    <tr>
+      <th nzWidth="10%">#</th>
+      <th nzWidth="50%">Full Name</th>
+      <th nzWidth="30%">DOB</th>
+      <th nzWidth="10%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of editRowTable.data; let i = index" class="editable-row">
+      <td>{{i + 1}}</td>
+      <td>
+        <div
+          class="editable-cell"
+          [hidden]="editId === data.id"
+          (click)="startEditName(data.id)"
+        >
+          {{ data.fullName }}
+        </div>
+        <input
+          placeholder="Student name"
+          [hidden]="editId !== data.id"
+          type="text"
+          nz-input
+          [(ngModel)]="data.fullName"
+          (blur)="stopEdit()"
+        />
+      </td>
+      <td>
+        <div
+          class="editable-cell"
+          [hidden]="editId === data.id"
+          (click)="startEditName(data.id)"
+        >
+          {{ data.dob  | date: 'dd/MM/yyyy'}}
+        </div>
+        <nz-date-picker
+          [hidden]="editId !== data.id"
+          [(ngModel)]="data.dob"
+          (blur)="stopEdit()"
+          [nzFormat]="'dd/MM/yyyy'"
+        ></nz-date-picker>
+      </td>
+      <td>
+        <a
+          nz-popconfirm
+          nzPopconfirmTitle="Sure to delete?"
+          (nzOnConfirm)="deleteRow(data.id)"
+          >Delete</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
